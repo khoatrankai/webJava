@@ -1,0 +1,275 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pcgearute</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js">
+        <link rel="stylesheet" href="script.js">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+         <link rel="stylesheet" th:href="@{/css/main.css}">
+        <link rel="stylesheet" th:href="@{/css/base.css}">
+        <link rel="stylesheet" th:href="@{/OwlCarousel2-2.3.4/dist/assets/owl.carousel.min.css}">
+        <link rel="stylesheet" th:href="@{/OwlCarousel2-2.3.4/dist/assets/owl.theme.default.min.css}">
+        <link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+    </head>
+    <body>
+    	<style>
+    	img{
+    		width: 37%;
+    	}
+    		.cart{
+      background-color: white;
+      padding: 15px;
+      padding-top: 1px;
+      border-radius: 10px;
+      display: none;
+      position: absolute;
+      top: 37px;
+      left: -391px;
+      z-index: 1;
+    }
+    .cart h1{
+      font-size: 27px;
+    }
+    .cart-item{
+      position: relative;
+    }
+    
+    .cart-item::after{
+      width: 110px;
+    position: absolute;
+    height: 33px;
+    background-color: transparent;
+    content: "";
+    display: block;
+    top: 13px;
+    left: -18px;
+    }
+    
+    .item-cart-product{ 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 7px;
+    }
+    .item-cart-product img{
+      width: 20%;
+    }
+    .cart-product{
+      padding: 2px;
+      border-top: solid;
+
+    }
+    
+    .item-cart-product + .item-cart-product{
+      margin-top: 10px;
+      border-top: solid;
+      padding-top: 10px;
+    }
+    .btn-delete-cart-item{
+      margin-left: 10px;
+    }
+    .title-cart-item h4{
+      font-size: 15px;
+    }
+    .btn-add-cart-item{
+      margin-right: -30px;
+      background-color: rgba(128, 128 ,128,0.35);
+      padding: 4px;
+    }
+    .btn-delete-cart-item{
+      margin-left: -30px;
+      background-color: rgba(128, 128 ,128,0.35);
+      padding: 4px;
+    }
+    .total-cart-item{
+      display: flex;
+      align-items: center;
+    }
+    .sl-cart-item h4{
+      font-size: 18px;
+    }
+    .total-cart-item h4{
+      font-size: 100%;
+    }
+    .btn-cart-order{
+      text-align: end;
+      margin-top: 20px;
+    }
+    .btn-cart-order button:hover{
+      background-color: black;
+    }
+
+    .btn-cart-order button{	
+      background: red;
+      padding: 9px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .btn-cart-order button a{
+      color: white;
+    }
+    .total-price{
+    	    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    }
+    .total-price h3{
+    	color: red;
+    }
+    .order-delivery{
+    
+    	text-align: end;
+    }
+    .order-delivery button{
+    	background: red;
+	    /* color: white; */
+	    padding: 15px;
+	    padding-right: 28px;
+	    padding-left: 28px;
+    }
+    .order-delivery button a{
+    	color: white;
+    	text-decoration: none;
+    }
+    
+    	</style>
+        <body-main>       
+        <main>
+			<div class ="container">
+		<div class = "row">
+			<h1> List Sản Phẩm </h1>
+		</div>
+		
+		<div class = "row">
+			<table class = "table table-striped table-bordered">
+				<thead class = "table-dark">
+					<tr>
+						<th> STT </th>
+						<th> TÊN SẢN PHẨM </th>
+						<th> GIÁ </th>
+						<th> SỐ LƯỢNG </th>
+						<th> ẢNH SẢN PHẨM </th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each = "giohang: ${giohangs}">
+						<td th:text = "${giohang.idGH}"></td>
+						<td th:text = "${giohang.sanphams.tenSP}"></td>
+						<td th:text = "${giohang.sanphams.giaSP}"></td>
+						<td th:text = "${giohang.SoLuong}"></td>
+						<td ><img th:src="${giohang.sanphams.imgSP}"></td>
+						<td>				
+							<a th:href = "@{/sanphams/order-delete/{id}(id=${giohang.idGH})}"
+							 class = "btn btn-danger">Delete</a>
+							 
+						</td>
+					</tr>
+				</tbody>
+			
+			</table>
+
+	</div>
+	</div>
+		<div class="total-price">Tổng: <h3 th:text="${total}"></h3></div>
+        <div class="order-delivery">
+        	<button><a href="/dathangs/new">Đặt hàng</a></button>
+        </div>
+        </main>
+
+            <footer>
+                <div class="footer-container row">
+                    <div class="introduce-contact col-3">
+                        <div class="introduce">
+                            <h6>GEARTEAM Nơi đem đến cho bạn trải nghiệm</h6>
+                            <p>© 1997 - 2020 Công Ty Cổ Phần Thương Mại - Dịch Vụ GearTeam</p>
+                        </div>
+                        <div class="contact">
+                            <h6>Liên Hệ Tổng Đài</h6>
+                            <p>19006587</p>
+                        </div>
+                    </div>
+                    <div class="location-buy col-3">
+                        <h6>Địa chỉ trụ sở chính:</h6>
+                        <p>Tầng 5, Số 117-119-121 Nguyễn Du, Phường Bến Thành, Quận 1, Thành Phố Hồ Chí Minh</p> 
+                        <h6> Văn phòng điều hành miền Bắc:</h6>   <p>Tầng 6, Số 1 Phố Thái Hà, Phường Trung Liệt, Quận Đống Đa, Hà Nội</p> 
+                        <h6>Văn phòng điều hành miền Nam:</h6> 
+                        <p>Tầng 11 Minh Long Tower, số 17 Bà Huyện Thanh Quan, Phường Võ Thị Sáu, Quận 3, TP. Hồ Chí Minh</p> 
+                    </div>
+                    <div class="certification">
+                        <img src="https://shopfront-cdn.tekoapis.com/common/da-dang-ky.png" alt="">
+                        <img src="https://images.dmca.com/Badges/dmca-badge-w100-2x1-02.png?ID=53b44883-ed2a-434d-902b-5adce10aafd5" alt="">
+                    </div>
+                </div>
+            </footer>
+            
+        </body-main>
+        
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script th:src="@{/OwlCarousel2-2.3.4/dist/owl.carousel.min.js}"></script>
+        <script>
+            $(document).ready(function(){
+            $(".owl-carousel").owlCarousel();
+            });
+            $('.owl-carousel').owlCarousel({
+                loop:true,
+                margin:10,
+                nav:true,
+                responsive:{
+                    0:{
+                        items:1
+                    },
+                    600:{
+                        items:1
+                    },
+                   1100:{
+                        items:1
+                    }
+                
+                }
+            })
+            $(document).ready(function(){
+            $(".owl-carousel2").owlCarousel();
+            });
+            $('.owl-carousel2').owlCarousel({
+                loop:true,
+                margin:10,
+                nav:false,
+                dots:false,
+                responsive:{
+                    0:{
+                        items:1
+                    },
+                    600:{
+                        items:1
+                    },
+                   1100:{
+                        items:5
+                    }
+                
+                }
+            })
+            var owl = $('.owl-carousel');
+            owl.owlCarousel({
+                items:4,
+                loop:true,
+                margin:10,
+                autoplay:true,
+                autoplayTimeout:1000,
+                autoplayHoverPause:true
+            });
+            owl.trigger('play.owl.autoplay',[3000])
+            
+        </script>
+    </body>
+    </html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<style>
+	
+		.header-order {
+    display: flex; }
+  
+  .order {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 1%; }
+  
+  .h-order-title {
+    margin-left: 35px; }
+  
+  
+  .btn-order {
+    border: none;
+    padding: 10px 25px;
+    margin-right: 35px;
+    background: red;
+    border: solid;
+     }
+     .btn-order a{
+     	text-decoration: none;
+    	color: white;
+     }
+  
+  .body-order {
+    margin-top: 5%; }
+  
+
+    .cart{
+      background-color: white;
+      padding: 15px;
+      padding-top: 1px;
+      border-radius: 10px;
+      display: none;
+      position: absolute;
+      top: 37px;
+      left: -391px;
+      z-index: 1;
+    }
+    .cart h1{
+      font-size: 27px;
+    }
+    .cart-item{
+      position: relative;
+    }
+    .cart-item:hover .cart{
+      display: block;
+    }
+    .cart-item::after{
+      width: 110px;
+    position: absolute;
+    height: 33px;
+    background-color: transparent;
+    content: "";
+    display: block;
+    top: 13px;
+    left: -18px;
+    }
+    
+    .item-cart-product{ 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 7px;
+    }
+    .item-cart-product img{
+      width: 20%;
+    }
+    .cart-product{
+      padding: 2px;
+      border-top: solid;
+
+    }
+    
+    .item-cart-product + .item-cart-product{
+      margin-top: 10px;
+      border-top: solid;
+      padding-top: 10px;
+    }
+    .btn-delete-cart-item{
+      margin-left: 10px;
+    }
+    .title-cart-item h4{
+      font-size: 15px;
+    }
+    .btn-add-cart-item{
+      margin-right: -30px;
+      background-color: rgba(128, 128 ,128,0.35);
+      padding: 4px;
+    }
+    .btn-delete-cart-item{
+      margin-left: -30px;
+      background-color: rgba(128, 128 ,128,0.35);
+      padding: 4px;
+    }
+    .total-cart-item{
+      display: flex;
+      align-items: center;
+    }
+    .sl-cart-item h4{
+      font-size: 18px;
+    }
+    .total-cart-item h4{
+      font-size: 100%;
+    }
+
+    .btn-cart-order{
+      text-align: end;
+      margin-top: 20px;
+    }
+    .btn-cart-order button:hover{
+      background-color: black;
+    }
+
+    .btn-cart-order button{
+      background: red;
+      padding: 9px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .btn-cart-order button a{
+      color: white;
+    }
+    .h-order-title {
+    margin-left: 35px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .h-order-img img{
+    width: 500px;
+  }
+	</style>
+	<div class="order">
+
+    <div class="header-order">
+            <div class="h-order-img">
+                
+                <img th:src="${sanpham.imgSP}" alt="">
+                
+            </div>
+            <div class="h-order-title">
+               
+                <div class="order-title-name"><h1 th:text ="${sanpham.tenSP}"></h1></div>
+                <div class="order-introduct">
+                            <h3>Thông tin chung:</h3>
+                            <ul>
+                                <li>Thương hiệu: <h4 th:text="${sanpham.thuonghieu.tenTH}"></h4></li>
+                                <li>Loại: <h4 th:text="${sanpham.loaihang.tenLH }"></h4></li>
+                            </ul>
+                </div>
+                <div class="order-title-price"> <h2  th:text ="${sanpham.giaSP}"></h2></div>
+                
+                <button class="btn-order">
+                <a th:href="@{/sanpham-detail/add/{id}(id=${sanpham.idSP})} ">Đặt hàng</a>
+                	
+                </button>
+          
+            </div>
+
+    </div>
+    <div class="body-order">
+                <h1>Đánh giá chi tiết về</h1>
+                <p  th:text ="${sanpham.motaSP}"></p>
+    </div>
+</div>
+</body>
+</html>

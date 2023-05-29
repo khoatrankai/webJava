@@ -1,0 +1,997 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pcgearute</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js">
+        <link rel="stylesheet" href="script.js">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+         <link rel="stylesheet" th:href="@{/css/main.css}">
+        <link rel="stylesheet" th:href="@{/css/base.css}">
+        <link rel="stylesheet" th:href="@{/OwlCarousel2-2.3.4/dist/assets/owl.carousel.min.css}">
+        <link rel="stylesheet" th:href="@{/OwlCarousel2-2.3.4/dist/assets/owl.theme.default.min.css}">
+    </head>
+    <body>
+    	<style>
+    		.cart{
+      background-color: white;
+      padding: 15px;
+      padding-top: 1px;
+      border-radius: 10px;
+      display: none;
+      position: absolute;
+      top: 37px;
+      left: -391px;
+      z-index: 1;
+    }
+    .cart h1{
+      font-size: 27px;
+    }
+    .cart-item{
+      position: relative;
+    }
+    .cart-item:hover .cart{
+      display: block;
+    }
+    .cart-item::after{
+      width: 110px;
+    position: absolute;
+    height: 33px;
+    background-color: transparent;
+    content: "";
+    display: block;
+    top: 13px;
+    left: -18px;
+    }
+    
+    .item-cart-product{ 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 7px;
+    }
+    .item-cart-product img{
+      width: 20%;
+    }
+    .cart-product{
+      padding: 2px;
+      border-top: solid;
+
+    }
+    
+    .item-cart-product + .item-cart-product{
+      margin-top: 10px;
+      border-top: solid;
+      padding-top: 10px;
+    }
+    .btn-delete-cart-item{
+      margin-left: 10px;
+    }
+    .title-cart-item h4{
+      font-size: 15px;
+    }
+    .btn-add-cart-item{
+      margin-right: -30px;
+      background-color: rgba(128, 128 ,128,0.35);
+      padding: 4px;
+    }
+    .btn-delete-cart-item{
+      margin-left: -30px;
+      background-color: rgba(128, 128 ,128,0.35);
+      padding: 4px;
+    }
+    .total-cart-item{
+      display: flex;
+      align-items: center;
+    }
+    .sl-cart-item h4{
+      font-size: 18px;
+    }
+    .total-cart-item h4{
+      font-size: 100%;
+    }
+    .btn-cart-order{
+      text-align: end;
+      margin-top: 20px;
+    }
+    .btn-cart-order button:hover{
+      background-color: black;
+    }
+
+    .btn-cart-order button{	
+      background: red;
+      padding: 9px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .btn-cart-order button a{
+      color: white;
+    }
+    .manage-user{
+      position: relative;
+      
+    }
+
+    .manage-user:hover .menu-user{
+      display: block;
+    }
+
+    .menu-user{
+      position: absolute;
+      width: 172px;
+      background: white;
+      padding: 14px;
+      border-radius: 5px;
+      z-index: 1;
+      left: -95px;
+      display: none;
+    }
+
+    .menu-user ul{
+      padding: 0px;
+    }
+    .menu-user ul li{
+      margin-top: 2px;
+    margin-bottom: 7px;
+    }
+
+    .menu-user ul li a{
+      color: black;
+    }
+    .menu-user ul li:hover a{
+      color: red;
+    }
+    	</style>
+        <body-main>
+            <header>
+                <div class="header-menu">
+                    <div class="logo-main">
+                        <img src="/img/logo.png" alt="" class="img-logo">
+                    </div>
+                    
+                    <div id="search-menu">
+                        <form action="" class="search-form">
+                            <input type="text" placeholder="tìm kiếm">
+                            <button>
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="navbar-menu">
+                        <ul class="navbar-list">
+                            <li class="nav-item">
+                                <a href="" class="link-nav-list">
+                                    <i class="fa-solid fa-bell"></i><span>Thông báo</span> 
+                                </a>                    
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="link-nav-list">
+                                    <i class="fa-solid fa-earth-americas"></i>
+                                <span>Ngôn ngữ</span> 
+                            </a> </li>
+                            <li class="nav-item manage-user" >
+	                            <a href="/login" class="link-nav-list" th:if="${usersign.idUser} == '0'">
+	                                <span>Tài khoản</span> 	                             
+	                            </a> 
+	                            <a href="" class="link-nav-list" th:unless="${usersign.idUser} == '0'">
+	                                <span th:text="${usersign.tenUser}"></span> 
+	                            </a> 
+	                            <div class="menu-user"  th:unless="${usersign.idUser} == '0'">
+                                    <ul>
+                                        <li th:if="${usersign.quyen.idQ} == '1'"><a href="/dathangs">Quản Lý Đặt Hàng</a></li>
+                                        <li th:if="${usersign.quyen.idQ} == '1'"><a href="/users">Quản Lý User</a></li>
+                                        <li th:if="${usersign.quyen.idQ} == '1'"><a href="/sanphams">Quản Lý Sản Phẩm</a></li>
+                                        <li><a href="/setidsign/default">Đăng Xuất</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                      
+                            <li class="nav-item cart-item">
+                            	<a href="" class="link-nav-list">
+                                <i class="fa-solid fa-cart-shopping"></i><span>Giỏ hàng</span> 
+                                </a>
+                                 <div class="cart">
+                                    <h1>Cart</h1>
+                                    <ul class="cart-product">
+                                        <li class="item-cart-product" th:each="giohang: ${giohangs}">
+                                            <div class="btn-close-cart-item">
+                                             <a th:href = "@{/sanphams/cart-delete/{id}(id=${giohang.idGH})}">X</a>
+                                            </div>
+                                            <img th:src="${giohang.sanphams.imgSP}" alt="">
+                                            <div class="title-cart-item">
+                                                <h4 th:text="${giohang.sanphams.tenSP}"></h4>
+                                            </div>
+                                            <div class="btn-add-cart-item">
+                                            <a th:href = "@{/sanphams/cart-add/{id}(id=${giohang.idGH})}"
+							 					><i class="fa-solid fa-plus"></i>
+							 					</a>
+                                                
+                                            </div>
+                                            <div class="sl-cart-item">
+                                                <h4 th:text="${giohang.SoLuong}"></h4>
+                                            </div>
+                                            <div class="btn-delete-cart-item">
+                                            <a th:href = "@{/sanphams/cart-minus/{id}(id=${giohang.idGH})}"
+							 					><i class="fa-solid fa-minus"></i>
+							 				</a>
+                                            </div>
+                                            <div class="total-cart-item">
+                                                <h4 th:text="${giohang.sanphams.giaSP}"></h4>đ
+                                            </div>
+                                        </li>                                   
+                                    </ul>
+                                	<div class="btn-cart-order">
+                                        <button>
+                                            <a th:href="@{/sanphams/order/{id}(id=${usersign.idUser})}">
+                                                Đặt Hàng 
+                                            </a>
+                                        </button>
+                                    </div>
+                                </div> 
+                             </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="head-link">
+                    <div class="list-product">
+                            <i class="fa-solid fa-bars"></i>
+                            <span class="text-list">Danh sách mặt hàng</span>
+                            <div class="navbar-menu-product">
+                            <ul class="list-index-product">
+                                <li class="item-index">
+                                    <div class="arrow-right"></div>
+                                    <i class="fa-solid fa-laptop margin-right-5"></i>
+                                    <span class="item-index-text">Laptop Gaming</span>
+                                    <div class="i-menucontent">
+                                        <ul class="row">
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Dell</h3>
+                                                <a href="">Dell Gaming G</a>
+                                                <a href="">Alienware</a>
+                        
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Gigabyte</h3>
+                                                <a href="">G5</a>
+                                                <a href="">Aorus</a>
+                                                <a href="">Aero</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="item-index">
+                                    <div class="arrow-right"></div>
+                                    <i class="fa-solid fa-laptop margin-right-5"></i>
+                                    <span class="item-index-text">PC - Máy tính bộ</span>
+                                    <div class="i-menucontent">
+                                        <ul class="row">
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Dell</h3>
+                                                <a href="">Dell Gaming G</a>
+                                                <a href="">Alienware</a>
+                        
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Gigabyte</h3>
+                                                <a href="">G5</a>
+                                                <a href="">Aorus</a>
+                                                <a href="">Aero</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="item-index">
+                                    <div class="arrow-right"></div>
+                                    <i class="fa-solid fa-laptop margin-right-5"></i>
+                                    <span class="item-index-text">PC - Màn hình máy tính</span>
+                                    <div class="i-menucontent">
+                                        <ul class="row">
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Dell</h3>
+                                                <a href="">Dell Gaming G</a>
+                                                <a href="">Alienware</a>
+                        
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Gigabyte</h3>
+                                                <a href="">G5</a>
+                                                <a href="">Aorus</a>
+                                                <a href="">Aero</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="item-index">
+                                    <div class="arrow-right"></div>
+                                    <i class="fa-solid fa-laptop margin-right-5"></i>
+                                    <span class="item-index-text">PC - Linh kiện máy tính</span>
+                                    <div class="i-menucontent">
+                                        <ul class="row">
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Dell</h3>
+                                                <a href="">Dell Gaming G</a>
+                                                <a href="">Alienware</a>
+                        
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Gigabyte</h3>
+                                                <a href="">G5</a>
+                                                <a href="">Aorus</a>
+                                                <a href="">Aero</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="item-index">
+                                    <div class="arrow-right"></div>
+                                    <i class="fa-solid fa-laptop margin-right-5"></i>
+                                    <span class="item-index-text">PC - Phụ kiện</span>
+                                    <div class="i-menucontent">
+                                        <ul class="row">
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Dell</h3>
+                                                <a href="">Dell Gaming G</a>
+                                                <a href="">Alienware</a>
+                        
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Gigabyte</h3>
+                                                <a href="">G5</a>
+                                                <a href="">Aorus</a>
+                                                <a href="">Aero</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                            <li class="col-5">
+                                                <h3>Acer</h3>
+                                                <a href="">Nitro</a>
+                                                <a href="">Aspire</a>
+                                                <a href="">Predator</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                
+                            </ul>
+                             </div>
+                    </div>
+                    
+                    <ul class="head-link__list row">
+                        <li class="head-link__item col-4">
+                            <button>
+                                <i class="fa-solid fa-money-check-dollar"></i>
+                                HƯỚNG DẪN THANH TOÁN
+                            </button>
+                        </li>
+                        <li class="head-link__item col-4">
+                            <button>
+                                <i class="fa-solid fa-money-check-dollar-pen"></i>
+                                HƯỚNG DẪN TRẢ GÓP
+                            </button>
+                        </li>
+                        <li class="head-link__item col-4">
+                            <button>
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                                CHÍNH SÁCH BẢO HÀNH
+                            </button>
+                        </li>
+                        <li class="head-link__item col-4">
+                            <button>
+                                <i class="fa-solid fa-car"></i>
+                                CHÍNH SÁCH VẬN CHUYỂN
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            
+        <main>
+
+
+            <div class="gearteam-header-content">
+                <div class="name-list-product">
+                    <div class="navbar-menu-product">
+                        <ul class="list-index-product">
+                            <li class="item-index">
+                                <div class="arrow-right"></div>
+                                <i class="fa-solid fa-laptop margin-right-5"></i>
+                                <span class="item-index-text">Laptop Gaming</span>
+                                <div class="i-menucontent">
+                                    <ul class="row">
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Dell</h3>
+                                            <a href="">Dell Gaming G</a>
+                                            <a href="">Alienware</a>
+                    
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Gigabyte</h3>
+                                            <a href="">G5</a>
+                                            <a href="">Aorus</a>
+                                            <a href="">Aero</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="item-index">
+                                <div class="arrow-right"></div>
+                                <i class="fa-solid fa-laptop margin-right-5"></i>
+                                <span class="item-index-text">PC - Máy tính bộ</span>
+                                <div class="i-menucontent">
+                                    <ul class="row">
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Dell</h3>
+                                            <a href="">Dell Gaming G</a>
+                                            <a href="">Alienware</a>
+                    
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Gigabyte</h3>
+                                            <a href="">G5</a>
+                                            <a href="">Aorus</a>
+                                            <a href="">Aero</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="item-index">
+                                <div class="arrow-right"></div>
+                                <i class="fa-solid fa-laptop margin-right-5"></i>
+                                <span class="item-index-text">PC - Màn hình máy tính</span>
+                                <div class="i-menucontent">
+                                    <ul class="row">
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Dell</h3>
+                                            <a href="">Dell Gaming G</a>
+                                            <a href="">Alienware</a>
+                    
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Gigabyte</h3>
+                                            <a href="">G5</a>
+                                            <a href="">Aorus</a>
+                                            <a href="">Aero</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="item-index">
+                                <div class="arrow-right"></div>
+                                <i class="fa-solid fa-laptop margin-right-5"></i>
+                                <span class="item-index-text">PC - Linh kiện máy tính</span>
+                                <div class="i-menucontent">
+                                    <ul class="row">
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Dell</h3>
+                                            <a href="">Dell Gaming G</a>
+                                            <a href="">Alienware</a>
+                    
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Gigabyte</h3>
+                                            <a href="">G5</a>
+                                            <a href="">Aorus</a>
+                                            <a href="">Aero</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="item-index">
+                                <div class="arrow-right"></div>
+                                <i class="fa-solid fa-laptop margin-right-5"></i>
+                                <span class="item-index-text">PC - Phụ kiện</span>
+                                <div class="i-menucontent">
+                                    <ul class="row">
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Dell</h3>
+                                            <a href="">Dell Gaming G</a>
+                                            <a href="">Alienware</a>
+                    
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Gigabyte</h3>
+                                            <a href="">G5</a>
+                                            <a href="">Aorus</a>
+                                            <a href="">Aero</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                        <li class="col-5">
+                                            <h3>Acer</h3>
+                                            <a href="">Nitro</a>
+                                            <a href="">Aspire</a>
+                                            <a href="">Predator</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+                <div class="gearteam-header-navigation">
+                    <div class="carousel-inner">
+                         <div class="slider owl-carousel owl-theme">
+                            <div class="item-nav">
+                                <a href="">
+                                    <img src="//theme.hstatic.net/1000026716/1000440777/14/slideshow_1.jpg?v=28822" alt="">
+                                </a>
+                            </div>
+                            <div class="item-nav">
+                                <a href="">
+                                    <img src="//theme.hstatic.net/1000026716/1000440777/14/slideshow_1.jpg?v=29542" alt="">
+                                </a>
+                            </div>
+                            <div class="item-nav">
+                                <a href="">
+                                    <img src="//theme.hstatic.net/1000026716/1000440777/14/slideshow_5.jpg?v=29542" alt="">
+                                </a>
+                            </div>
+                            <div class="item-nav">
+                                <a href="">
+                                    <img src="//theme.hstatic.net/1000026716/1000440777/14/slideshow_4.jpg?v=29542" alt="">
+                                </a>
+                            </div>
+                            <div class="item-nav">
+                                <a href="">
+                                    <img src="//theme.hstatic.net/1000026716/1000440777/14/slideshow_10.jpg?v=29542" alt="">
+                                </a>
+                            </div>
+                            <div class="item-nav">
+                                <a href="">
+                                    <img src="//theme.hstatic.net/1000026716/1000440777/14/slideshow_12.jpg?v=29542" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="gearteam-body-content">
+                <div class="list-body-content">
+                    <ul class="list-content">
+                        <li class="item-content">
+                            <h2 th:text ="${titleTH1}"></h2>
+                            <ul class="row item-product ">
+                               
+                                <li class="col-5-1" th:each = "sanpham: ${sanphams1}">
+                                <a th:href="@{/sanpham-detail/{id} (id=${sanpham.idSP})}">
+	                                <img th:src="${sanpham.imgSP}" alt="">
+	                                    <div class="item-price">
+	
+	                                        <h4 th:text = "${sanpham.tenSP}"></h4>
+	                                        <h3 th:text = "${sanpham.giaSP}"></h3>
+	                                    </div>
+                                </a>
+                                    
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="item-content">
+                            <h2 th:text ="${titleTH2}"></h2>
+                            <ul class="row item-product ">                      
+                                <li class="col-5-1" th:each = "sanpham2: ${sanphams2}">
+                                <a th:href="@{/sanpham-detail/{id} (id=${sanpham2.idSP})}">
+                                    <img th:src="${sanpham2.imgSP}" alt="">
+                                    <div class="item-price">
+
+                                        <h4 th:text = "${sanpham2.tenSP}"></h4>
+                                        <h3 th:text = "${sanpham2.giaSP}"></h3>
+                                    </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="item-content">
+                            <h2 th:text ="${titleTH3}"></h2>
+                            <ul class="row item-product ">                      
+                                <li class="col-5-1" th:each = "sanpham3: ${sanphams3}">
+                                <a th:href="@{/sanpham-detail/{id} (id=${sanpham3.idSP})}">
+                                    <img th:src="${sanpham3.imgSP}" alt="">
+                                    <div class="item-price">
+
+                                        <h4 th:text = "${sanpham3.tenSP}"></h4>
+                                        <h3 th:text = "${sanpham3.giaSP}"></h3>
+                                    </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                         <li class="item-content">
+                            <h2 th:text ="${titleLH1}"></h2>
+                            <ul class="row item-product ">                      
+                                <li class="col-5-1" th:each = "sanpham: ${sanphamLHs1}">
+                                <a th:href="@{/sanpham-detail/{id} (id=${sanpham.idSP})}">
+                                    <img th:src="${sanpham.imgSP}" alt="">
+                                    <div class="item-price">
+
+                                        <h4 th:text = "${sanpham.tenSP}"></h4>
+                                        <h3 th:text = "${sanpham.giaSP}"></h3>
+                                    </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- hot -->
+
+        </main>
+
+            <footer>
+                <div class="footer-container row">
+                    <div class="introduce-contact col-3">
+                        <div class="introduce">
+                            <h6>GEARTEAM Nơi đem đến cho bạn trải nghiệm</h6>
+                            <p>© 1997 - 2020 Công Ty Cổ Phần Thương Mại - Dịch Vụ GearTeam</p>
+                        </div>
+                        <div class="contact">
+                            <h6>Liên Hệ Tổng Đài</h6>
+                            <p>19006587</p>
+                        </div>
+                    </div>
+                    <div class="location-buy col-3">
+                        <h6>Địa chỉ trụ sở chính:</h6>
+                        <p>Tầng 5, Số 117-119-121 Nguyễn Du, Phường Bến Thành, Quận 1, Thành Phố Hồ Chí Minh</p> 
+                        <h6> Văn phòng điều hành miền Bắc:</h6>   <p>Tầng 6, Số 1 Phố Thái Hà, Phường Trung Liệt, Quận Đống Đa, Hà Nội</p> 
+                        <h6>Văn phòng điều hành miền Nam:</h6> 
+                        <p>Tầng 11 Minh Long Tower, số 17 Bà Huyện Thanh Quan, Phường Võ Thị Sáu, Quận 3, TP. Hồ Chí Minh</p> 
+                    </div>
+                    <div class="certification">
+                        <img src="https://shopfront-cdn.tekoapis.com/common/da-dang-ky.png" alt="">
+                        <img src="https://images.dmca.com/Badges/dmca-badge-w100-2x1-02.png?ID=53b44883-ed2a-434d-902b-5adce10aafd5" alt="">
+                    </div>
+                </div>
+            </footer>
+            
+        </body-main>
+        
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script th:src="@{/OwlCarousel2-2.3.4/dist/owl.carousel.min.js}"></script>
+        <script>
+            $(document).ready(function(){
+            $(".owl-carousel").owlCarousel();
+            });
+            $('.owl-carousel').owlCarousel({
+                loop:true,
+                margin:10,
+                nav:true,
+                responsive:{
+                    0:{
+                        items:1
+                    },
+                    600:{
+                        items:1
+                    },
+                   1100:{
+                        items:1
+                    }
+                
+                }
+            })
+            $(document).ready(function(){
+            $(".owl-carousel2").owlCarousel();
+            });
+            $('.owl-carousel2').owlCarousel({
+                loop:true,
+                margin:10,
+                nav:false,
+                dots:false,
+                responsive:{
+                    0:{
+                        items:1
+                    },
+                    600:{
+                        items:1
+                    },
+                   1100:{
+                        items:5
+                    }
+                
+                }
+            })
+            var owl = $('.owl-carousel');
+            owl.owlCarousel({
+                items:4,
+                loop:true,
+                margin:10,
+                autoplay:true,
+                autoplayTimeout:1000,
+                autoplayHoverPause:true
+            });
+            owl.trigger('play.owl.autoplay',[3000])
+            
+        </script>
+    </body>
+    </html>

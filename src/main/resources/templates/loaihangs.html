@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+</head>
+<body>
+
+	<div class ="container">
+		<div class="row">
+			<table class = "table">
+				<thead class = "table-dark">
+					<tr>
+						<th> tenLH</th>
+						<th> Actions </th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each = "loaihang: ${loaihangs}">
+						<td th:text = "${loaihang.idLH}"></td>
+						<td th:text = "${loaihang.tenLH}"></td>
+					</tr>
+				</tbody>
+			
+			</table>
+		</div>
+	</div>
+	
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+</head>
+<body>
+	<style>
+		img{
+			width: 37%;
+		}
+	</style>
+
+	<div class ="container">
+		<div class = "row">
+			<h1> List Đặt Hàng </h1>
+		</div>
+		
+		<div class = "row">
+			<table class = "table table-striped table-bordered">
+				<thead class = "table-dark">
+					<tr>
+						<th> STT </th>
+						<th> TÊN SẢN PHẨM </th>
+						<th> SỐ LƯỢNG </th>
+						<th> ĐỊA CHỈ </th>
+						<th> STT KHÁCH HÀNG </th>
+						<th> TÊN KHÁCH HÀNG </th>
+						<th> ẢNH SẢN PHẨM </th>
+						<th> TÌNH TRẠNG </th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each = "sanpham: ${dathangs}">
+						<td th:text = "${sanpham.idDH}"></td>
+						<td th:text = "${sanpham.sanphams.tenSP}"></td>
+						<td th:text = "${sanpham.SoLuong}"></td>
+						<td th:text = "${sanpham.diaChi}"></td>
+						<td th:text = "${sanpham.users.idUser}"></td>
+						<td th:text = "${sanpham.users.tenUser}"></td>
+						<td ><img th:src="${sanpham.sanphams.imgSP}"></td>
+						<td th:text = "${sanpham.tinhtrangs.loaiTT}"></td>
+						<td>
+						
+							<a th:href = "@{/dathangs/accept/{id}(id=${sanpham.idDH})}"
+							 class = "btn btn-primary">Duyệt</a>
+						
+							
+							<a th:href = "@{/dathangs/{id}(id=${sanpham.idDH})}"
+							 class = "btn btn-danger">Delete</a>
+							 
+						</td>
+					</tr>
+				</tbody>
+			
+			</table>
+
+	</div>
+	</div>
+	
+</body>
+</html>

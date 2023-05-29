@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+</head>
+<body>
+	<style>
+		img{
+			width: 37%;
+		}
+	</style>
+
+	<div class ="container">
+		<div class = "row">
+			<h1> List Sản Phẩm </h1>
+		</div>
+		
+		<div class = "row">
+			<div class = "col-lg-3">
+				<a th:href = "@{/sanphams/new}" class = "btn btn-primary btn-sm mb-3"> Add Sản Phẩm</a>
+			</div>
+			<table class = "table table-striped table-bordered">
+				<thead class = "table-dark">
+					<tr>
+						<th> STT </th>
+						<th> TÊN SẢN PHẨM </th>
+						<th> GIÁ </th>
+						<th> MÔ TẢ </th>
+						<th> THƯƠNG HIỆU </th>
+						<th> LOẠI HÀNG </th>
+						<th> ẢNH SẢN PHẨM </th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each = "sanpham: ${sanphams}">
+						<td th:text = "${sanpham.idSP}"></td>
+						<td th:text = "${sanpham.tenSP}"></td>
+						<td th:text = "${sanpham.giaSP}"></td>
+						<td th:text = "${sanpham.motaSP}"></td>
+						<td th:text = "${sanpham.thuonghieu.tenTH}"></td>
+						<td th:text = "${sanpham.loaihang.tenLH}"></td>
+						<td ><img th:src="${sanpham.imgSP}"></td>
+						<td>
+							<a th:href = "@{/sanphams/edit/{id}(id=${sanpham.idSP})}"
+							 class = "btn btn-primary">Update</a>
+							
+							<a th:href = "@{/sanphams/{id}(id=${sanpham.idSP})}"
+							 class = "btn btn-danger">Delete</a>
+							 
+						</td>
+					</tr>
+				</tbody>
+			
+			</table>
+
+	</div>
+	</div>
+	
+</body>
+</html>

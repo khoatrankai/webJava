@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class ="form-group">
+								<label for="thuonghieu">Thương Hiệu</label>
+								  <select name="thuonghieu" id="thuonghieu"> 
+								    	<option  th:each = "th: ${thuonghieus}" th:value="${th.idTH}" th:text = "${th.tenTH}"></option>
+								  </select>
+							</div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+</head>
+<body>
+	<style>
+		.btn-primary{
+			margin-bottom: 20px;
+		}
+	</style>
+	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+	  <!-- Brand -->
+	  <a class="navbar-brand" href="#">Sản Phẩm Management System</a>
+	
+	  <!-- Toggler/collapsibe Button -->
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+	
+	  <!-- Navbar links -->
+	  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+	    <ul class="navbar-nav">
+	      <li class="nav-item">
+	        <a class="nav-link" th:href="@{/sanphams}">Sản Phẩm Management</a>
+	      </li>
+	    </ul>
+	  </div>
+	</nav>
+	<br>
+	<br>
+		<div class = "container">
+			<div class = "row">
+				<div class ="col-lg-8 col-md-8 col-sm-8 container justify-content-center card">
+					<h1 class = "text-center"> Create New Sản Phẩm </h1>
+					<div class = "card-body">
+						<form th:action="@{/sanphams}" th:object = "${sanpham}" method="POST">
+							<div class ="form-group">
+								<label> Tên Sản Phẩm </label>
+								<input
+								type = "text"
+								name = "tenSP"
+								th:field = "*{tenSP}"
+								class = "form-control"
+								placeholder="Tên Sản Phẩm" 
+								/>
+							</div>
+							
+							<div class ="form-group">
+								<label> Mô tả </label>
+								<input
+								type = "text"
+								name = "motaSP"
+								th:field = "*{motaSP}"
+								class = "form-control"
+								placeholder="Mô Tả Sản Phẩm" 
+								/>
+							</div>
+							
+							<div class ="form-group">
+								<label> Giá </label>
+								<input
+								type = "text"
+								name = "giaSP"
+								th:field = "*{giaSP}"
+								class = "form-control"
+								placeholder="Giá Sản Phẩm" 
+								/>
+							</div>
+							
+							<div class ="form-group">
+								<label> Link Sản Phẩm </label>
+								<input
+								type = "text"
+								name = "imgSP"
+								th:field = "*{imgSP}"
+								class = "form-control"
+								placeholder="Link Sản Phẩm" 
+								/>
+							</div>
+							
+							<div class ="form-group">
+								<label for="loaihang">Loại Hàng</label>
+								  <select name="loaihang" id="loaihang"  th:field="*{loaihang}"> 
+								    <option th:each = "lh: ${loaihangs}" th:value="${lh.idLH}" th:text = "${lh.tenLH}"></option>
+								  </select>
+							</div>
+							<div class ="form-group">
+								<label for="thuonghieu">Thương Hiệu</label>
+								  <select name="thuonghieu" id="thuonghieu"  th:field="*{thuonghieu}"> 
+								    <option  th:each = "th: ${thuonghieus}" th:value="${th.idTH}" th:text = "${th.tenTH}"></option>
+								  </select>
+							</div>
+							<div class = "box-footer">
+								<button type="submit" class = "btn btn-primary">
+									Submit
+								</button>
+							</div>
+						</form>
+					
+					</div>
+				</div>
+			</div>
+		</div>
+</body>
+</html>
